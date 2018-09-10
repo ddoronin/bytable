@@ -1,0 +1,30 @@
+{
+  "name": "bytable",
+  "description": "Bytable (Byte Table) - binary serializer for javascript",
+  "devDependencies": {
+    "coveralls": "^3.0.2",
+    "lcov-result-merger": "^3.1.0",
+    "lerna": "^3.1.0"
+  },
+  "scripts": {
+    "postinstall": "lerna bootstrap",
+    "build": "lerna run pre-publish",
+    "test": "lerna run test",
+    "coveralls": "lerna run coverage && ./node_modules/.bin/lcov-result-merger packages/**/lcov.info | node node_modules/.bin/coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddoronin/bytable.git"
+  },
+  "keywords": [
+    "binary",
+    "typescript",
+    "javascript"
+  ],
+  "author": "Dima Doronin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ddoronin/bytable/issues"
+  },
+  "homepage": "https://github.com/ddoronin/bytable#readme"
+}

@@ -31,6 +31,7 @@ bower_components
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
+lib/
 
 # Dependency directories
 node_modules/
@@ -59,3 +60,15 @@ typings/
 
 # next.js build output
 .next
+
+# IntelliJ Idea
+.idea
+
+# Code coverage
+.nyc_output
+
+# Apple macOS
+.DS_Store
+
+# Tokens
+.coveralls.yml

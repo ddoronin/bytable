@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "removeComments": false,
+        "alwaysStrict": true,
+        "module": "commonjs",
+        "target": "es6",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": false,
+        "lib": [
+            "dom",
+            "es7",
+            "es6",
+            "es2015.symbol",
+            "es2015.symbol.wellknown"
+        ]
+    },
+    "include": [
+        "src/**/*.ts",
+        "test/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}
