@@ -17,7 +17,6 @@ This repository is a monorepo that is managed using [Lerna](https://github.com/l
 
 ## About
 
-Bytable is developed and maintained by [Dima Doronin](https://l.facebook.com/l.php?u=https%3A%2F%2Flinkedin.com%2Fin%2Fddoronin&h=AT2XAFMoZNZd-94Bem1UzdWW6Qd2zB7j0T9m8DHgaPt8a1lMNhfWb2qhj943muoNae-NlWwp_zVleYmDjLMCGGycsIfukIlv48sapEnk6LSy_ZlHs6tdEn6b_0W3GNdgVqYgFQXWQdXnE9iK2tw1BkwAVrg) 
-
-[![twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=flat-square)](https://l.facebook.com/l.php?u=https%3A%2F%2Ftwitter.com%2Fwarlock_coder&h=AT3UXtBtTCeOnjMDdxAn5sy8EbiiW_ArdnCjYJD3c4Kk4ECOarGjbhE3giRIVE7YnI8EzM_KrMsAIOtWPuKwSnIB5pL4JeKx4BW6iXJfw2SlQdUHtKHs8bHbLCAWwhhptoKNxzMQ7KUE5TsARKV5-GJgfPA)
+Bytable is developed and maintained by [Dima Doronin](https://www.linkedin.com/in/ddoronin)
+[![twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=flat-square)](https://twitter.com/warlock_coder)
 
