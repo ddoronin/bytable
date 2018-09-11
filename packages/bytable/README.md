@@ -1,6 +1,4 @@
-## `Bytable`
-The core package.
-[![npm version](https://img.shields.io/npm/v/bytable.svg?style=flat-square)](https://www.npmjs.com/package/bytable)
+## [![npm version](https://img.shields.io/npm/v/bytable.svg?style=flat-square)](https://www.npmjs.com/package/bytable) `Bytable` - The Core Package
 
 The terminology defined here by author should introduce core concepts and principals the library is relying on.
 
