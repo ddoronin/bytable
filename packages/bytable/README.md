@@ -13,9 +13,16 @@ The terminology defined here by [author](https://www.linkedin.com/in/ddoronin) w
 
 Byte Table is a data structure describing memory allocation for underlying binary representation of an object. It can be visualized as a table with three key columns: type, offset and size, - the rows are corresponding class fields. 
 
-|             | TYPE    | OFFSET (bytes)  | SIZE (bytes)|
+```
+class Foo { 
+    a: int; 
+    b: string;
+}
+```
+| `class Foo` | TYPE    | OFFSET (bytes)  | SIZE (bytes)|
 | ----------- | ------- | --------------- | ----------- |
-| class field | string  | number          | number      |
+| a           | int     | x_a             | y_a         |
+| b           | string  | x_b             | y_b         |
 
 *Please see example below.*
 
