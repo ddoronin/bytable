@@ -1,10 +1,14 @@
-# Bytable
+## `Bytable`
+The core package.
+[![npm version](https://img.shields.io/npm/v/bytable.svg?style=flat-square)](https://www.npmjs.com/package/bytable)
 
-The core package representing a general-purpose binary serializer.
+The terminology defined here by author should introduce core concepts and principals the library is relying on.
 
 ## Byte Table
 
-Every data object can be described by this table that I call "Byte Table". For example, for an HTTP Request with a string field `requestId`, integer fields `index` and `count` and some `paylod` the table could be:
+Byte Table is a data structure describing memory allocation for underlying binary representation of a data object. It can be visualized as a table with 3 columns: type, offset and size, - the rows are corresponding object fields. 
+
+For illustration purpose let's keep tracking the fields' names. Than, for instance, a typical POST HTTP Request with a string field `requestId`, integer fields `index` and `count` and `paylod` could be visualized as:
 
 | FIELD          | TYPE              | SIZE (bytes) | SHIFT (bytes) |
 | -------------- | ----------------- | ------------ | ------------- |
@@ -15,47 +19,72 @@ Every data object can be described by this table that I call "Byte Table". For e
 | payload_SIZE   | UInt32BE          | 4            | 130           |
 | payload        | BSON              | 42           | 134           |
 
+*Dynamic fields are accomponied with a header holding the field size. The name of this header has a suffix "_SIZE" by convention.*
+
 ## Static & Dynamic Types
 
-Let's call static types low-level fixed-size types such as integer (`Int8`, `Int16` and `Int32`), unsigned integer (`UInt8`, `UInt16` and `UInt32`), floating point numbers (`Float` and `Double`) and boolean. These types can be described with two invariant parameters: byte shift and size. For example, if the number is `Int16` and it's shifted in memory for `x` bytes, than it can be parsed from binary slice starting at `x` and ending at `x + 2` (`Int16` size is 2 bytes). The same methodoligy is applicable for any other type with fixed size.
+Static Types are low-level fixed-size (known at compiler time) types limited to integer (`Int8`, `Int16` and `Int32`), unsigned integer (`UInt8`, `UInt16` and `UInt32`), floating point (`Float` and `Double`) and boolean. To map the data of static types into a binary format it's enought to set two parameters: offset and size. Offset is showing for how many bytes the data is shifted in memory. The size is a number of bytes to be allocated in memory starting with the offset pointer.
 
-Dynamic Types are variable size types, such as `String`, `BSON` or raw `Binary`. For these types a shift is invariant, but a size is not. Let's assume that the size is not larger than `UInt32.Max`. In this case any dynamic type could be represented as combination of header `SIZE` and body `<Binary>`. For example, `String` will require header `UInt32` (holding the size of the string in bytes) and binary version of the given string.
+Dynamic Types are low-level types of dynmic sizes known only at runtime. Supported out of the box dynamic types are  `String`, `BSON` and raw `Binary`. Each field of dynamic type could be a combination of a static type header holding the data size (bynary length) and a body of this size. By convention this header name is suffixed with "_SIZE" and the default type of it is `UInt32` (limiting max capacity of dynamic type field to `UInt32.Max` bytes that should be more than enough in 99% cases).
 
-## API
+## Object Metadata
 
-This library exposes two abstract classes: Reader and Writer. Implementations are platform-specific (very different for browser and nodejs).
+By design byte tables should compliment serializable classes. The best option available today in javascript or typescript is decorators.
+The linbrary exposes a set of decorators, which can attach platform-agnostic types to javascript objects.
 
-### Reader
+Each serializable class should be decorated with `@proto` (from protocol), each seriazable field - with one of the decorators from this table:
+
+| Group            | Decorator  | Aliases  | Size (bytes) |
+| ---------------- | ---------- | ---------| -------------|
+| Unsigned Integer | @uint8     | @u8      | 1            |
+|                  | @uint16    | @u16     | 2            |
+|                  | @uint32    | @u32     | 4            |
+| Signed Integer   | @int8      | @i8      | 1            |
+|                  | @int16     | @i16     | 2            |
+|                  | @int32     | @i32     | 4            |
+| Floatin Point    | @float     | @f       | 4            |
+|                  | @double    | @d       | 8            |
+| Boolean          | @boolean   | @bool    | 1            |
+| String           | @string    | @s       | dynamic      |
+| Raw Binary       | @binary    |          | dynamic      |
+| BSON             | @bson      | @obj     | dynamic      |
+
+
+And here is a TypeScript example:
 
 ```typescript
-export abstract class Reader<T, M> {
-    /**
-     * Reads `size` bytes of the binary message of given `type` starting with position `start`.
-     * Should be implemented in child classes.
-     * @param {M} msg0 - binary message.
-     * @param {string} type - type of data encoded in bytes between start and start + size.
-     * @param {number} start - starting position.
-     * @param {number} size - message size.
-     */
-    protected abstract readAs<In>(msg0: M, type: In, start: number, size: number): Out<In>;
-}
+import { proto, uint8, uint16, bson, string } from 'bytable';
 
-```
+@proto
+class Request {
+    @string
+    requestId: string;
 
-### Writer
+    @uint8
+    readonly index: number;
 
-```typescript
-export abstract class Writer<T, M> {
-    protected abstract alloc(size: number): M;
-    protected abstract dynamicToBinary(type: string, value: any): any;
-    protected abstract writeAs(m: M, type: string, value: any, shift: number): any;
+    @uint16
+    readonly count: number;
+
+    @bson
+    payload: IPayload;
 }
 ```
+The underlying Byte Table, generated in run-time, can be found at the top of the spec.
 
-## Usage
+## Platform Specific
 
-To get an idea of usage look at these two implementations:
+The next step is to get the object byte table + data and produce raw binary. Two abstract classes are exposed: Reader and Writer. The Implementation is not included in the core library sicnce it's platform-specific and would be  completely different and incompatible for nodejs and browsers.
 
-1. NodeJS implementation can be found here: [`bytable-node`](/packages/bytable-node)
 
-2. Browser - [`bytable-client`](/packages/bytable-client)
+To get an idea of implementation please check out these two projects:
+
+1. [`bytable-node`](/packages/bytable-node) is a nodejs implementation.
+
+2. [`bytable-client`](/packages/bytable-client) is for browsers.
+
+Reader and Writer cover binary serialization and deserialization based on the underlying byte table.
+
+## References
+
+Here will be a list of publications.

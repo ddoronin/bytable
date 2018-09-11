@@ -1,7 +1,6 @@
 `Bytable` is a binary serializer for javascript.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/ddoronin/bytable/blob/master/LICENSE)
-[![npm version](https://img.shields.io/npm/v/bytable.svg?style=flat-square)](https://www.npmjs.com/package/bytable)
 [![Build Status](https://img.shields.io/travis/ddoronin/bytable/master.svg?style=flat-square)](https://travis-ci.org/ddoronin/bytable)
 [![Coverage Status](https://img.shields.io/coveralls/ddoronin/bytable/master.svg?style=flat-square)](https://coveralls.io/github/ddoronin/bytable?branch=master)
 
