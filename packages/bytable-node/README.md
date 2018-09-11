@@ -1,4 +1,3 @@
-## `Bytable Node`
 [![npm version](https://img.shields.io/npm/v/bytable-node.svg?style=flat-square)](https://www.npmjs.com/package/bytable-node)
 
 ```bash
