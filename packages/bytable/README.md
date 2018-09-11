@@ -1,41 +1,36 @@
 ## `Bytable` - The Core Package
 [![npm version](https://img.shields.io/npm/v/bytable.svg?style=flat-square)](https://www.npmjs.com/package/bytable)
 
+The platform-agnostic library used as a core building block for browser and nodejs binary serializers. Before using this package check out [`bytable-node`](/packages/bytable-node) and [`bytable-client`](/packages/bytable-client).
+
 ```bash
 npm install bytable
 ```
 
-The terminology defined here by author should introduce core concepts and principals the library is relying on.
+The terminology defined here by [author](https://www.linkedin.com/in/ddoronin) will introduce core concepts and principals the library is relying on.
 
 ## Byte Table
 
-Byte Table is a data structure describing memory allocation for underlying binary representation of a data object. It can be visualized as a table with 3 columns: type, offset and size, - the rows are corresponding object fields. 
+Byte Table is a data structure describing memory allocation for underlying binary representation of an object. It can be visualized as a table with three key columns: type, offset and size, - the rows are corresponding class fields. 
 
-For illustration purpose let's keep tracking the fields' names. Than, for instance, a typical POST HTTP Request with a string field `requestId`, integer fields `index` and `count` and `paylod` could be visualized as:
+|             | TYPE    | OFFSET (bytes)  | SIZE (bytes)|
+| ----------- | ------- | --------------- | ----------- |
+| class field | string  | number          | number      |
 
-| FIELD          | TYPE              | SIZE (bytes) | SHIFT (bytes) |
-| -------------- | ----------------- | ------------ | ------------- |
-| requestId_SIZE | UInt32BE          | 4            | 0             |
-| requestId      | String            | 123          | 4             |
-| index          | UInt8             | 1            | 127           |
-| count          | UInt16BE          | 2            | 128           |
-| payload_SIZE   | UInt32BE          | 4            | 130           |
-| payload        | BSON              | 42           | 134           |
-
-*Dynamic fields are accomponied with a header holding the field size. The name of this header has a suffix "_SIZE" by convention.*
+*Please see example below.*
 
 ## Static & Dynamic Types
 
-Static Types are low-level fixed-size (known at compiler time) types limited to integer (`Int8`, `Int16` and `Int32`), unsigned integer (`UInt8`, `UInt16` and `UInt32`), floating point (`Float` and `Double`) and boolean. To map the data of static types into a binary format it's enought to set two parameters: offset and size. Offset is showing for how many bytes the data is shifted in memory. The size is a number of bytes to be allocated in memory starting with the offset pointer.
+Static Types are atomic fixed-size types (the size is known at compile time). There are limited to integer (`Int8`, `Int16` and `Int32`), unsigned integer (`UInt8`, `UInt16` and `UInt32`), floating point (`Float` and `Double`) and boolean (`Boolean`). A projection of static type data into binary representation can be identified by two parameters: offset and size. Offset is showing for how many bytes the data is shifted in memory. The size is a number of bytes to be allocated in memory starting with the offset pointer.
 
-Dynamic Types are low-level types of dynmic sizes known only at runtime. Supported out of the box dynamic types are  `String`, `BSON` and raw `Binary`. Each field of dynamic type could be a combination of a static type header holding the data size (bynary length) and a body of this size. By convention this header name is suffixed with "_SIZE" and the default type of it is `UInt32` (limiting max capacity of dynamic type field to `UInt32.Max` bytes that should be more than enough in 99% cases).
+Dynamic Types are atomic types of dynmic sizes known only at run-time. Supported out of the box dynamic types are  `String` and raw `Binary`, but it can be extended with `BSON`, for instance. A dynamic type is a combination of a static type header saying the data size (bynary length) and body of this size. By convention a header name is suffixed with "_SIZE" and it's `UInt32` (i.e. max capacity of dynamic type is limited by `UInt32.Max` bytes).
 
 ## Object Metadata
 
-By design byte tables should compliment serializable classes. The best option available today in javascript or typescript is decorators.
+By design byte tables should compliment serializable classes. Probably the best option available today in javascript or typescript is decorators.
 The linbrary exposes a set of decorators, which can attach platform-agnostic types to javascript objects.
 
-Each serializable class should be decorated with `@proto` (from protocol), each seriazable field - with one of the decorators from this table:
+Each serializable class should be decorated with `@proto` (from protocol) and each seriazable field - with one of the decorators from a table below.
 
 | Group            | Decorator  | Aliases  | Size (bytes) |
 | ---------------- | ---------- | ---------| -------------|
@@ -53,7 +48,7 @@ Each serializable class should be decorated with `@proto` (from protocol), each 
 | BSON             | @bson      | @obj     | dynamic      |
 
 
-And here is a TypeScript example:
+Here is a typical POST Request class written in TypeScript with type decorators:
 
 ```typescript
 import { proto, uint8, uint16, bson, string } from 'bytable';
@@ -73,21 +68,33 @@ class Request {
     payload: IPayload;
 }
 ```
-The underlying Byte Table, generated in run-time, can be found at the top of the spec.
+The underlying Byte Table, generated in run-time:
+
+| FIELD          | TYPE              | OFFSET (bytes) | SIZE (bytes) |
+| -------------- | ----------------- | -------------- | ------------- |
+| requestId_SIZE | UInt32BE          | 0              | 4             |
+| requestId      | String            | 4              | 123           |
+| index          | UInt8             | 127            | 1             |
+| count          | UInt16BE          | 128            | 2             |
+| payload_SIZE   | UInt32BE          | 130            | 4             |
+| payload        | BSON              | 134            | 42            |
+
+*Dynamic fields are accomponied with a header holding the field size. The name of this header has a suffix "_SIZE" by convention.*
 
 ## Platform Specific
 
-The next step is to get the object byte table + data and produce raw binary. Two abstract classes are exposed: Reader and Writer. The Implementation is not included in the core library sicnce it's platform-specific and would be  completely different and incompatible for nodejs and browsers.
+The next step is to convert an object into raw binary using a byte table. Two abstract classes are responsible for this: Reader and Writer. They are a layer of abstraction exposed to the library consumers, which should implement platform-specific bindings such as memory allocation and read/write from static types.
 
+NodeJS and Browser implementations:
 
-To get an idea of implementation please check out these two projects:
+- [`bytable-node`](/packages/bytable-node)
 
-1. [`bytable-node`](/packages/bytable-node) is a nodejs implementation.
+- [`bytable-client`](/packages/bytable-client)
 
-2. [`bytable-client`](/packages/bytable-client) is for browsers.
+Summarizing there are two fundamental points of extension: Reader/Writer and decorators for custom dynamic types such as BSON.
 
-Reader and Writer cover binary serialization and deserialization based on the underlying byte table.
-
-## References
-
-Here will be a list of publications.
+<h1>
+    <p style="text-align: center">
+        The End
+    <p>
+</h1>
