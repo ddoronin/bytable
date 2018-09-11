@@ -1,6 +1,10 @@
 ## `Bytable` - The Core Package
 [![npm version](https://img.shields.io/npm/v/bytable.svg?style=flat-square)](https://www.npmjs.com/package/bytable)
 
+```bash
+npm install bytable
+```
+
 The terminology defined here by author should introduce core concepts and principals the library is relying on.
 
 ## Byte Table
