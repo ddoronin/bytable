@@ -1,7 +1,5 @@
 import { Writer } from 'bytable';
-import { BSON } from 'bson';
-
-const bson = new BSON();
+import { bson } from './core';
 
 export class BufferWriter<T> extends Writer<T, Buffer> {
     protected alloc(size: number): Buffer {
