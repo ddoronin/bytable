@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "compile": "ts-node ./src/index.ts",
+    "compile": "ts-node --files ./src/index.ts",
     "test": "./node_modules/.bin/mocha --require ts-node/register ./test/**/*.spec.ts",
     "test:watch": "npm run test -- --reporter nyan -w --watch-extensions ts",
     "pre-publish": "rm -rf lib && tsc --declaration -p ./tsconfig.json --outDir lib/"
@@ -29,8 +29,7 @@
   },
   "homepage": "https://github.com/ddoronin/b-flow#readme",
   "dependencies": {
-    "@types/bson": "^1.0.11",
-    "bson": "^3.0.2",
+    "bson-ext": "^2.0.1",
     "bytable": "^0.0.4",
     "typescript": "^3.0.3"
   },

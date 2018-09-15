@@ -1,7 +1,5 @@
 import { Reader, byteMap } from 'bytable';
-import { BSON } from 'bson';
-
-const bson = new BSON();
+import { bson } from './core';
 
 export class BufferReader<C> extends Reader<C, Buffer> {
     readAs<T>(msg: Buffer, type: string, offset: number, size: number): T {
