@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/ddoronin/b-flow#readme",
   "dependencies": {
+    "mocha-snapshots": "^4.1.0",
     "typescript": "^3.0.3"
   },
   "devDependencies": {
