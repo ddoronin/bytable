@@ -15,6 +15,6 @@ export class Codec<T> {
     }
 
     write(obj: T): ArrayBuffer {
-        return this.writer.write(obj) as any;
+        return this.writer.write(obj).buffer;
     }
 }
