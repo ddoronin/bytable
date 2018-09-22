@@ -1,6 +1,6 @@
 {
   "name": "bytable-client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "NodeJS Byte Tables for a browser agent",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -32,7 +32,7 @@
     "@types/bson": "^1.0.11",
     "bson": "^3.0.2",
     "buffer": "^5.2.0",
-    "bytable": "^0.0.4",
+    "bytable": "^0.0.5",
     "typescript": "^3.0.3"
   },
   "peerDependencies": {
