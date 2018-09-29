@@ -8,8 +8,12 @@ export class DataViewWriter<T> extends Writer<T, DataView> {
     }
 
     protected dynamicToBinary(type: string, value: any): any {
-        if (type === 'BSON')    return bson.serialize(value);
-        if (type === 'String')  return Buffer.from(value as string, 'UTF8');
+        // TODO: investigate why return type should be Buffer, but not ArrayBuffer!!!
+        switch (type) {
+            case 'BSON':        return bson.serialize(value);
+            case 'String':      return Buffer.from(value as string, 'UTF8');
+            case 'Binary':      return value;
+        }
 
         // Everything else
         throw new Error(`Unknown type ${type}.`);
@@ -30,7 +34,7 @@ export class DataViewWriter<T> extends Writer<T, DataView> {
 
         // Binary of Dynamic Types
         const buf: Buffer = Buffer.from(msg.buffer);
-        if (type === 'binary' || type === 'Binary') return buf.fill(value, offset).buffer;
+        if (type === 'binary') return buf.fill(value, offset).buffer;
 
         // Everything else
         throw new Error(`Unknown type ${type}.`);
