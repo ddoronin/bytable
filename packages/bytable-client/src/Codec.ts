@@ -2,7 +2,7 @@ import { DataViewReader } from './DataViewReader';
 import { DataViewWriter } from './DataViewWriter';
 
 /**
- * Responsible for reading data from/to binary and constructing js objects.
+ * Responsible for reading binary data and constructing js objects.
  * 
  * `Codec.create(C)` is more preferable to use over `new Codec(C)`.
  * It will create a new instance or pull one from the cache if it's alread created.
