@@ -2,11 +2,10 @@ import { DataViewReader } from './DataViewReader';
 import { DataViewWriter } from './DataViewWriter';
 
 /**
- * Codec is responsible for reading data from binary and constructing js objects
- * or writing js objects data into binary format.
+ * Responsible for reading data from/to binary and constructing js objects.
  * 
- * Please use `Codec.create(C)` instead of `new Codec(C)` since it's more effecient.
- * It will create a new instance or pull one from the cache if it was alread created before and still available.
+ * `Codec.create(C)` is more preferable to use over `new Codec(C)`.
+ * It will create a new instance or pull one from the cache if it's alread created.
  */
 export class Codec<T> { 
     private readonly reader: DataViewReader<T>;
