@@ -5,7 +5,7 @@ import { DataViewWriter } from './DataViewWriter';
  * Responsible for reading binary data and constructing js objects.
  * 
  * `Codec.create(C)` is more preferable to use over `new Codec(C)`.
- * It will create a new instance or pull one from the cache if it's alread created.
+ * It will create a new instance or pull one from the cache.
  */
 export class Codec<T> { 
     private readonly reader: DataViewReader<T>;
