@@ -5,7 +5,7 @@ import { DataViewWriter } from './DataViewWriter';
  * Responsible for reading binary data and constructing js objects.
  * 
  * `Codec.create(C)` is more preferable to use over `new Codec(C)`.
- * It will create a new instance or pull one from the cache.
+ * It will create a new instance or pull one from cache.
  */
 export class Codec<T> { 
     private readonly reader: DataViewReader<T>;
@@ -32,11 +32,11 @@ export class Codec<T> {
         return this.writer.write(obj).buffer;
     }
 
-    // Static
+    // Cache of codec instances by class type.
     private static types: WeakMap<any, any> = new WeakMap();
 
     /**
-     * Creates a new instance of the Codec or pulls from existed.
+     * Creates a new instance of the Codec or pulls from cache.
      * @param C - class type.
      */
     public static create<K>(C: { new(): K }) {
