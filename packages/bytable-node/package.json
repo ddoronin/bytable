@@ -1,6 +1,6 @@
 {
   "name": "bytable-node",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "NodeJS Byte Tables",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -30,7 +30,7 @@
   "homepage": "https://github.com/ddoronin/b-flow#readme",
   "dependencies": {
     "bson-ext": "^2.0.1",
-    "bytable": "^0.0.5",
+    "bytable": "^0.0.6",
     "typescript": "^3.0.3"
   },
   "devDependencies": {
