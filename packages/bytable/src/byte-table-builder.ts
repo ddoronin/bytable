@@ -70,7 +70,7 @@ export function toBinary(
         const [ fieldName, type, dynamic ] = protoTable[n];
         if (dynamic) {
             const binary = dynamicToBinary(dynamic, obj[fieldName]);
-            const dynamicSize = type !== 'Binary' ? binary.byteLength: binary.length;
+            const dynamicSize = binary.byteLength || binary.length;
             table[n] = [ BINARY, dynamicSize, binary ];
 
             // Find companion field and write binary size.
