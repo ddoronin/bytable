@@ -12,7 +12,7 @@ export class DataViewWriter<T> extends Writer<T, DataView> {
         switch (type) {
             case 'BSON':        return bson.serialize(value);
             case 'String':      return Buffer.from(value as string, 'UTF8');
-            case 'Binary':      return value;
+            case 'Binary':      return Buffer.from(value as ArrayBuffer);
         }
 
         // Everything else

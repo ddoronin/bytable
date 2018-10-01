@@ -20,7 +20,7 @@ export class DataViewReader<C> extends Reader<C, DataView> {
         const buf: Buffer = Buffer.from(msg.buffer, offset, size);
         switch(type) {
             case 'BSON':        return bson.deserialize(buf);
-            case 'Binary':      return buf.buffer as any;
+            case 'Binary':      return buf.buffer.slice(offset, offset + size) as any;
             case 'String':      return buf.toString('UTF8') as any;
         }
 
